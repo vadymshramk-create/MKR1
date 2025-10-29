@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ліс у Карпатах</title>
+    <style>
+      /* css */
+      :root {
+        --color-bg: #f0f7f4;
+        --color-fg: #1a4d2e;
+        --color-white: #ffffff;
+        --color-primary: #2d7a4a;
+        --color-primary-dark: #1d5032;
+        --color-secondary: #8b6f47;
+        --color-secondary-light: #c4a47a;
+        --color-border: #d4e8db;
+        --color-muted: #98c9ad;
+        --color-muted-light: #e8f3ed;
+        --color-dark: #0d2818;
+
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-base: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+
+        --border-radius: 0.5rem;
+        --transition: all 0.2s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter',
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #e8f5e9 0%,
+          #f0f7f4 50%,
+          #e3f2fd 100%
+        );
+        color: var(--color-fg);
+        line-height: 1.6;
+        font-size: 16px;
+        min-height: 100vh;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      p {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      a {
+        color: var(--color-primary);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      a:hover {
+        color: var(--color-primary-dark);
+      }
+
+      /* header */
+      .header {
+        background: linear-gradient(
+          135deg,
+          #1d5032 0%,
+          #2d7a4a 50%,
+          #3a8f5a 100%
+        );
+        border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(29, 80, 50, 0.3);
+      }
+
+      .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-base);
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .logo {
+        width: 4.5rem;
+        height: 4.5rem;
+        background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .site-title {
+        font-size: 1.5rem;
+        color: var(--color-white);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .burger-menu {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 8px;
+        z-index: 1001;
+        background: none;
+        border: none;
+      }
+      .burger-line {
+        width: 25px;
+        height: 3px;
+        background: var(--color-white);
+        border-radius: 3px;
+        transition: var(--transition);
+      }
+      .burger-menu.active .burger-line:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+      .burger-menu.active .burger-line:nth-child(2) {
+        opacity: 0;
+      }
+      .burger-menu.active .burger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+      .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--color-white);
+        box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        overflow-y: auto;
+        transition: left 0.3s ease;
+      }
+      .mobile-menu-overlay.active {
+        left: 0;
+      }
+      .mobile-menu-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+      .mobile-menu-backdrop.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .container {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* sidebar */
+      .sidebar {
+        flex-shrink: 0;
+        top: 5rem;
+        align-self: flex-start;
+        max-height: auto;
+        overflow-y: auto;
+      }
+
+      .sidebar-left {
+        position: sticky;
+        width: 12rem;
+      }
+
+      .sidebar-right {
+        width: 12rem;
+      }
+
+      /* menu */
+      .menu {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--color-border);
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(45, 122, 74, 0.1);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .menu-title {
+        padding: var(--spacing-base);
+        font-weight: 700;
+        background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+        color: var(--color-dark);
+        border-bottom: 2px solid var(--color-border);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .menu-list {
+        list-style: none;
+        overflow: hidden;
+      }
+
+      .menu-list li {
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .menu-list li:last-child {
+        border-bottom: none;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-base);
+        color: var(--color-primary);
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: var(--transition);
+        position: relative;
+        background: linear-gradient(90deg, transparent 0%, transparent 100%);
+      }
+
+      .menu-item:hover {
+        background: linear-gradient(90deg, #e8f5e9 0%, #f1f8f4 100%);
+        color: var(--color-primary-dark);
+        padding-left: 1.25rem;
+      }
+
+      .menu-item::after {
+        content: '›';
+        font-size: 1.25rem;
+        opacity: 0;
+        transition: var(--transition);
+      }
+
+      .menu-item:hover::after {
+        opacity: 1;
+      }
+
+      /* sidebar footer*/
+      .sidebar-footer {
+        background: linear-gradient(135deg, #1d5032 0%, #2d7a4a 100%);
+        color: var(--color-white);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        text-align: left;
+        box-shadow: 0 4px 12px rgba(29, 80, 50, 0.3);
+      }
+
+      .footer-title {
+        font-weight: 700;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .footer-description {
+        font-size: 0.875rem;
+        color: #d4e8db;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .footer-copyright {
+        font-size: 0.75rem;
+        color: #a8d4ba;
+      }
+
+      /* hero */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #1d5032 0%,
+          #2d7a4a 50%,
+          #3a8f5a 100%
+        );
+        color: var(--color-white);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-xl) var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: 0 8px 24px rgba(29, 80, 50, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-base);
+        color: var(--color-white);
+        position: relative;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero-text {
+        color: #e8f5e9;
+        font-size: 1rem;
+        line-height: 1.8;
+        margin-bottom: var(--spacing-lg);
+        max-width: 600px;
+        position: relative;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--border-radius);
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, #8b6f47 0%, #a0845a 100%);
+        color: var(--color-white);
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+      }
+
+      .button-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+        background: linear-gradient(135deg, #a0845a 0%, #b89968 100%);
+      }
+
+      .content-grid {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xl);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--color-border);
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(45, 122, 74, 0.1);
+        transition: var(--transition);
+      }
+
+      .card:hover {
+        box-shadow: 0 8px 28px rgba(45, 122, 74, 0.2);
+        transform: translateY(-4px);
+      }
+
+      .card-image {
+        height: 450px;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        position: relative;
+      }
+
+      .card-image::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+      }
+
+      .card:nth-child(1) .card-image {
+        background-image: url('/Users/vadimsramko/Desktop/cs-32:1/mkr1/img/card1.png');
+      }
+
+      .card:nth-child(2) .card-image {
+        background-image: url('/Users/vadimsramko/Desktop/cs-32:1/mkr1/img/card2.png');
+      }
+
+      .card:nth-child(3) .card-image {
+        background-image: url('/Users/vadimsramko/Desktop/cs-32:1/mkr1/img/card3.png');
+      }
+
+      .card-content {
+        padding: var(--spacing-xl) var(--spacing-lg);
+      }
+
+      .card-title {
+        font-size: 1.75rem;
+        color: var(--color-dark);
+        margin-bottom: var(--spacing-base);
+      }
+
+      .card-description {
+        font-size: 1.05rem;
+        color: var(--color-primary);
+        line-height: 1.8;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .card-details {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.8;
+        padding-top: var(--spacing-base);
+        border-top: 1px solid var(--color-border);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .card-extra {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .card-stats {
+        display: flex;
+        gap: var(--spacing-base);
+        margin-top: var(--spacing-md);
+        font-size: 0.85rem;
+      }
+
+      .card-stat {
+        flex: 1;
+        padding: var(--spacing-base);
+        background: var(--color-muted-light);
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .card-stat-value {
+        font-weight: 700;
+        color: var(--color-primary-dark);
+        font-size: 1.3rem;
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      .card-stat-label {
+        font-size: 0.8rem;
+        color: var(--color-primary);
+      }
+
+      /* info box */
+      .info-box {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--color-border);
+        padding: var(--spacing-md) var(--spacing-lg);
+        box-shadow: 0 4px 12px rgba(45, 122, 74, 0.1);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .info-title {
+        font-size: 1rem;
+        color: var(--color-dark);
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
+        border-bottom: 2px solid var(--color-border);
+      }
+
+      .info-list {
+        list-style: none;
+      }
+
+      .info-item {
+        margin-bottom: var(--spacing-md);
+        font-size: 0.875rem;
+      }
+
+      .info-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .info-label {
+        display: block;
+        font-weight: 600;
+        color: var(--color-primary);
+        margin-bottom: 0.25rem;
+      }
+
+      .info-value {
+        color: var(--color-primary);
+        margin: 0;
+      }
+
+      .feature-box {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        border-radius: var(--border-radius);
+        border: 1px solid var(--color-border);
+        padding: var(--spacing-md);
+        box-shadow: 0 4px 12px rgba(45, 122, 74, 0.1);
+        margin-bottom: var(--spacing-lg);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #2d7a4a 0%, #3a8f5a 100%);
+      }
+
+      .feature-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(45, 122, 74, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-sm);
+        display: block;
+      }
+
+      .feature-title {
+        font-weight: 700;
+        color: var(--color-dark);
+        margin-bottom: var(--spacing-sm);
+        font-size: 0.95rem;
+      }
+
+      .feature-description {
+        font-size: 0.8rem;
+        color: var(--color-primary);
+        line-height: 1.6;
+      }
+
+      .stats-box {
+        background: linear-gradient(
+          135deg,
+          #8b6f47 0%,
+          #a0845a 50%,
+          #b89968 100%
+        );
+        color: var(--color-white);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        box-shadow: 0 6px 20px rgba(139, 111, 71, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stats-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
+      }
+
+      .stats-title {
+        font-weight: 700;
+        margin-bottom: var(--spacing-base);
+        position: relative;
+      }
+
+      .stats-content {
+        font-size: 0.875rem;
+        line-height: 1.8;
+        position: relative;
+      }
+
+      .stats-content p {
+        margin: 0;
+      }
+
+      /* page footer */
+      .page-footer {
+        background: linear-gradient(135deg, #0d2818 0%, #1d5032 100%);
+        color: var(--color-white);
+        padding: var(--spacing-xl) var(--spacing-lg);
+        margin-top: var(--spacing-xl);
+        box-shadow: 0 -4px 20px rgba(13, 40, 24, 0.2);
+      }
+
+      .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .footer-column {
+        text-align: left;
+      }
+
+      .footer-heading {
+        font-weight: 700;
+        margin-bottom: var(--spacing-base);
+        color: #a8d4ba;
+      }
+
+      .footer-text {
+        color: #d4e8db;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .footer-links a {
+        color: #d4e8db;
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: var(--color-white);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: center;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #a8d4ba;
+      }
+
+      /* adaptiv */
+      @media (max-width: 1200px) {
+        .sidebar-left,
+        .sidebar-right {
+          display: none;
+        }
+        .burger-menu {
+          display: flex;
+        }
+        .mobile-menu-overlay,
+        .mobile-menu-backdrop {
+          display: block;
+        }
+        .mobile-info-box,
+        .mobile-features,
+        .mobile-stats,
+        .mobile-sidebar-footer {
+          display: block;
+        }
+
+        .features-grid {
+          display: grid;
+        }
+        .container {
+          gap: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .site-title {
+          display: block;
+        }
+
+        .container {
+          flex-direction: column;
+          gap: var(--spacing-lg);
+          padding: 1rem;
+        }
+
+        .sidebar-left {
+          width: 100%;
+          position: relative;
+          display: none;
+          margin-bottom: var(--spacing-lg);
+        }
+
+        .sidebar-right {
+          width: 100%;
+        }
+
+        .hero {
+          padding: var(--spacing-lg);
+        }
+
+        .hero-title {
+          font-size: 1.5rem;
+        }
+
+        .hero-text {
+          font-size: 0.95rem;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+          gap: var(--spacing-md);
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header-container {
+          padding: var(--spacing-sm);
+        }
+
+        .logo {
+          width: 4rem;
+          height: 4rem;
+          font-size: 1.25rem;
+        }
+
+        .hero {
+          padding: var(--spacing-md);
+        }
+
+        .hero-title {
+          font-size: 1.25rem;
+        }
+
+        .hero-text {
+          font-size: 0.9rem;
+          margin-bottom: var(--spacing-md);
+        }
+
+        .button {
+          padding: 0.4rem 1rem;
+          font-size: 0.8rem;
+        }
+
+        .card-image {
+          height: 140px;
+          font-size: 2.5rem;
+        }
+
+        .container {
+          padding: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <div class="logo-section">
+          <div class="logo">
+            <img
+              src="/Users/vadimsramko/Desktop/cs-32:1/mkr1/img/logo.png"
+              alt="Логотип лісу"
+            />
+          </div>
+        </div>
+        <button class="burger-menu" id="burgerMenu">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
+      </div>
+    </header>
+    <div class="mobile-menu-backdrop" id="menuBackdrop"></div>
+    <div class="mobile-menu-overlay" id="mobileMenu">
+      <nav class="menu">
+        <h2 class="menu-title">Меню</h2>
+        <ul class="menu-list">
+          <li><a href="#" class="menu-item">Головна</a></li>
+          <li><a href="#" class="menu-item">Про ліс</a></li>
+          <li><a href="#" class="menu-item">Флора</a></li>
+          <li><a href="#" class="menu-item">Фауна</a></li>
+          <li><a href="#" class="menu-item">Охорона</a></li>
+          <li><a href="#" class="menu-item">Контакти</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container">
+      <aside class="sidebar sidebar-left">
+        <nav class="menu">
+          <h2 class="menu-title">Меню</h2>
+          <ul class="menu-list">
+            <li><a href="#" class="menu-item">Головна</a></li>
+            <li><a href="#" class="menu-item">Про ліс</a></li>
+            <li><a href="#" class="menu-item">Флора</a></li>
+            <li><a href="#" class="menu-item">Фауна</a></li>
+            <li><a href="#" class="menu-item">Охорона</a></li>
+            <li><a href="#" class="menu-item">Контакти</a></li>
+          </ul>
+        </nav>
+
+        <footer class="sidebar-footer">
+          <p class="footer-title">Ліс у Карпатах</p>
+          <p class="footer-description">
+            Проект охорони природної спадщини Карпатів
+          </p>
+          <p class="footer-copyright">© 2025 Всі права захищені</p>
+        </footer>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero">
+          <h2 class="hero-title">Лісництво у Карпатах</h2>
+          <p class="hero-text">
+            Відкрийте природну красу і багатство фауни та флори одного з
+            найважливіших гірських екосистем Європи. Наш сайт присвячений
+            охоронені та вивченню унікальної природи Карпатських лісів.
+          </p>
+          <button class="button button-primary">Дізнатися більше</button>
+        </section>
+
+        <div class="content-grid">
+          <article class="card">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3 class="card-title">Мальовничість Карпат</h3>
+              <p class="card-description">
+                Відкрийте красу природи в найвищих гірських массивах України.
+                Карпати вражають своєю величчю та різноманітністю ландшафтів,
+                створюючи неповторну атмосферу гармонії людини та природи.
+              </p>
+              <p class="card-details">
+                Карпатські гори простягаються на понад 1500 км територією
+                України, охоплюючи Закарпатську, Івано-Франківську, Львівську та
+                Чернівецьку області. Найвища точка - гора Говерла (2061 м), яка
+                щороку приваблює тисячі туристів та альпіністів. Тут знаходяться
+                унікальні екосистеми, древні букові та ялинові ліси, кришталево
+                чисті гірські потоки та водоспади.
+              </p>
+              <p class="card-extra">
+                Карпатські ландшафти надзвичайно різноманітні: від м'яких
+                полонин на високогір'ї до глибоких лісистих ущелин. Особливо
+                вражають альпійські луки з рідкісними квітами, що розцвітають
+                влітку. Регіон також відомий своїми мінеральними джерелами, які
+                використовуються для лікувальних цілей. Карпати - це не лише
+                природна краса, але й багата культурна спадщина гуцулів, лемків
+                та бойків.
+              </p>
+              <div class="card-stats">
+                <div class="card-stat">
+                  <span class="card-stat-value">2061м</span>
+                  <span class="card-stat-label">Говерла</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">1500км</span>
+                  <span class="card-stat-label">Протяжність</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">4 обл.</span>
+                  <span class="card-stat-label">Території</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3 class="card-title">Біологічне Різноманіття</h3>
+              <p class="card-description">
+                Тисячі видів рослин та тварин у природному середовищі створюють
+                унікальну екосистему Карпат. Це один з найбільш біологічно
+                різноманітних регіонів Європи, де зберігаються рідкісні та
+                зникаючі види.
+              </p>
+              <p class="card-details">
+                Карпатські ліси є домом для великих хижаків: бурих ведмедів
+                (близько 7000 особин), рисей (до 2500), вовків та диких кабанів.
+                Тут мешкають благородні олені, козулі, куниці та багато інших
+                ссавців. Орнітофауна налічує понад 250 видів птахів, включаючи
+                рідкісних орлів, соколів та сов. Особливу цінність мають древні
+                букові праліси, які є об'єктом Світової спадщини ЮНЕСКО.
+              </p>
+              <p class="card-extra">
+                Флора Карпат надзвичайно різноманітна - понад 2000 видів
+                судинних рослин, з яких близько 100 є ендеміками. Ліси
+                представлені буком, ялиною, дубом, ялицею та реліктовими
+                рослинами. На високогір'ї розташовані унікальні альпійські та
+                субальпійські луки з рідкісними видами квітів, такими як
+                едельвейс, рододендрон та шафран. Багато видів занесені до
+                Червоної книги України і потребують особливої охорони.
+              </p>
+              <div class="card-stats">
+                <div class="card-stat">
+                  <span class="card-stat-value">2000+</span>
+                  <span class="card-stat-label">Видів рослин</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">250+</span>
+                  <span class="card-stat-label">Видів птахів</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">7000</span>
+                  <span class="card-stat-label">Ведмедів</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3 class="card-title">Водні Ресурси</h3>
+              <p class="card-description">
+                Чисті гірські річки та джерела води високої якості живлять цілі
+                регіони України та сусідніх країн. Карпати є важливим
+                водорозділом між басейнами Чорного, Балтійського та Адріатичного
+                морів.
+              </p>
+              <p class="card-details">
+                Карпати є джерелом багатьох великих річок України та Центральної
+                Європи: Дністра, Прута, Тиси, Серету та їх численних приток.
+                Загалом у регіоні протікає понад 500 річок і струмків. Гірські
+                потоки та водоспади створюють неповторні пейзажі та є
+                популярними туристичними об'єктами. Найвідоміші водоспади: Шипіт
+                (14 м), Женецький (15 м) та Труфанець (36 м).
+              </p>
+              <p class="card-extra">
+                Вода Карпат відзначається високою якістю та природною
+                мінералізацією. У регіоні розташовані численні мінеральні
+                джерела, на базі яких функціонують бальнеологічні курорти
+                (Трускавець, Моршин, Поляна). Карпатські ліси виконують важливу
+                водоохоронну функцію, регулюючи водний режим річок та
+                запобігаючи повеням. Гірські озера, такі як Синевир та
+                Несамовите, є унікальними природними пам'ятками.
+              </p>
+              <div class="card-stats">
+                <div class="card-stat">
+                  <span class="card-stat-value">500+</span>
+                  <span class="card-stat-label">Річок</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">98%</span>
+                  <span class="card-stat-label">Чистота</span>
+                </div>
+                <div class="card-stat">
+                  <span class="card-stat-value">36м</span>
+                  <span class="card-stat-label">Найвищий водоспад</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </main>
+
+      <aside class="sidebar sidebar-right">
+        <section class="info-box">
+          <h2 class="info-title">Важлива інформація</h2>
+          <ul class="info-list">
+            <li class="info-item">
+              <span class="info-label">Площа лісів:</span>
+              <p class="info-value">2.6 млн. гектарів</p>
+            </li>
+            <li class="info-item">
+              <span class="info-label">Видів рослин:</span>
+              <p class="info-value">Понад 2000</p>
+            </li>
+            <li class="info-item">
+              <span class="info-label">Охоронні статус:</span>
+              <p class="info-value">ЮНЕСКО Світова Спадщина</p>
+            </li>
+          </ul>
+        </section>
+
+        <article class="feature-box">
+          <div class="feature-icon">☁️</div>
+          <h3 class="feature-title">Клімат</h3>
+          <p class="feature-description">
+            М'який гірський клімат з достатньою кількістю опадів
+          </p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-icon">🌍</div>
+          <h3 class="feature-title">Екосистема</h3>
+          <p class="feature-description">
+            Гармонійна система природних взаємодій та процесів
+          </p>
+        </article>
+
+        <section class="stats-box">
+          <h3 class="stats-title">Цікаві факти</h3>
+          <div class="stats-content">
+            <p>🦌 Численність зубра: 1000+</p>
+            <p>🦅 Видів птахів: 250+</p>
+            <p>🌳 Вічність деревців: до 300 років</p>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="page-footer">
+      <div class="footer-container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <h4 class="footer-heading">Про Нас</h4>
+            <p class="footer-text">
+              Присвячено охороні та просвітництву щодо природного багатства
+              Карпатів
+            </p>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-heading">Навігація</h4>
+            <ul class="footer-links">
+              <li><a href="#">Головна</a></li>
+              <li><a href="#">Про ліс</a></li>
+              <li><a href="#">Флора</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4 class="footer-heading">Контакти</h4>
+            <p class="footer-text">Email: info@liskarpatah.ua</p>
+            <p class="footer-text">Тел: +38 (032) 123-45-67</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2025 Лісництво у Карпатах. Всі права захищені.</p>
+          <p>Розроблено студентом групи КН-31 Шрамко Вадимом Олеговичем 🌲</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
